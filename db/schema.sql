@@ -4,7 +4,7 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `age` integer NOT NULL,
+  `age` integer NOT NULL CHECK (age >= 6),
   `sex` enum('male','female') NOT NULL,
   `skill_level` enum('beginner','intermediate','advanced','professional') NOT NULL,
   `playing_hand` enum('left','right') NOT NULL,
@@ -38,7 +38,9 @@ CREATE TABLE `tournament_events` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `tournament_id` integer NOT NULL,
   `category` enum('MS','WS','MD','WD','XD') NOT NULL,
-  `name` varchar(255)
+  `name` varchar(255),
+  `min_age` integer DEFAULT NULL,
+  `max_age` integer DEFAULT NULL
 );
 
 CREATE TABLE `tournament_participants` (

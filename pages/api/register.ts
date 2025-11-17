@@ -58,6 +58,15 @@ export default async function handler(
       return res.status(400).json({ message: 'Прізвище занадто довге (максимум - 255 символів).' });
     }
 
+    const userAge = parseInt(age);
+    if (isNaN(userAge)) {
+      return res.status(400).json({ message: 'Вік має бути числом.' });
+    }
+  
+    if (userAge < 6) {
+      return res.status(400).json({ message: 'Ви повинні бути старше 6 років для успішної реєстрації.' });
+    }
+
     const [existingUser]: any = await db.execute(
       'SELECT id FROM users WHERE email = ?',
       [email]

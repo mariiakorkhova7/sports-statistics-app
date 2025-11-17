@@ -116,7 +116,7 @@ export default function RegisterPage() {
 
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="age" className="text-gray-900">Вік:</Label>
-            <Input type="number" name="age" id="age" value={formData.age} onChange={handleChange} required min="1" />
+            <Input type="number" name="age" id="age" value={formData.age} onChange={handleChange} required min="6" />
           </div>
 
           <div className="grid w-full items-center gap-1.5">
