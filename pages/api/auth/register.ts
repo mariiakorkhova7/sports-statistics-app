@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import db from '../../lib/db';
+import db from '../../../lib/db';
 import bcrypt from 'bcrypt';
 
 export default async function handler(
@@ -93,9 +93,9 @@ export default async function handler(
     const passwordHash = await bcrypt.hash(password, 10);
 
     const [result]: any = await db.execute(
-      `INSERT INTO users (email, password_hash, first_name, last_name, age, sex, skill_level, playing_hand, created_at) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [email, passwordHash, first_name, last_name, age, sex, skill_level, playing_hand, new Date()]
+      `INSERT INTO users (email, password_hash, first_name, last_name, age, sex, skill_level, playing_hand) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [email, passwordHash, first_name, last_name, age, sex, skill_level, playing_hand]
     );
     
     const newUserId = result.insertId;

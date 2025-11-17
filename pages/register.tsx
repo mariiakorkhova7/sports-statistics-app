@@ -41,39 +41,54 @@ export default function RegisterPage() {
   };
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setMessage('');
-    setError('');
+  e.preventDefault();
+  setMessage('');
+  setError('');
 
-    const roles = [];
-    if (isPlayer) {
-      roles.push('player');
-    }
-    if (isOrganizer) {
-      roles.push('organizer');
-    }
+  const roles = [];
+  if (isPlayer) {
+    roles.push('player');
+  }
+  if (isOrganizer) {
+    roles.push('organizer');
+  }
 
-    if (roles.length === 0) {
-      setError('Ви повинні обрати хоча б одну роль (Гравець/Організатор).');
-      return;
-    }
+  if (roles.length === 0) {
+    setError('Ви повинні обрати хоча б одну роль (Гравець/Організатор).');
+    return;
+  }
 
-    const finalData = {
-      ...formData,
-      age: parseInt(formData.age),
-      sex: sex,
-      skill_level: skillLevel,
-      playing_hand: playingHand,
-      roles: roles,
-    };
+  const finalData = {
+    ...formData,
+    age: parseInt(formData.age),
+    sex: sex,
+    skill_level: skillLevel,
+    playing_hand: playingHand,
+    roles: roles,
+  };
 
+  try {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(finalData),
     });
 
-    const data = await response.json();
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers.get('content-type'));
+
+    const responseText = await response.text();
+    console.log('Raw response:', responseText);
+
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.error('Response was:', responseText);
+      setError('Помилка обробки відповіді сервера. Перевірте консоль.');
+      return;
+    }
 
     if (response.ok) {
       setMessage(`Користувача створено. Перенаправлення...`);
@@ -83,7 +98,11 @@ export default function RegisterPage() {
     } else {
       setError(`Помилка: ${data.message}`);
     }
-  };
+  } catch (error) {
+    console.error('Fetch error:', error);
+    setError('Помилка з\'єднання з сервером');
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
