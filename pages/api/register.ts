@@ -67,6 +67,20 @@ export default async function handler(
       return res.status(400).json({ message: 'Ви повинні бути старше 6 років для успішної реєстрації.' });
     }
 
+    const allowedSex = ['male', 'female'];
+    const allowedSkill = ['beginner', 'intermediate', 'advanced', 'professional'];
+    const allowedHand = ['left', 'right'];
+
+    if (!allowedSex.includes(sex)) {
+      return res.status(400).json({ message: 'Неправильне значення для статі.' });
+    }
+    if (!allowedSkill.includes(skill_level)) {
+      return res.status(400).json({ message: 'Неправильне значення для рівня гри.' });
+    }
+    if (!allowedHand.includes(playing_hand)) {
+      return res.status(400).json({ message: 'Неправильне значення для домінантної руки.' });
+    }
+
     const [existingUser]: any = await db.execute(
       'SELECT id FROM users WHERE email = ?',
       [email]
