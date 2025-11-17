@@ -27,6 +27,15 @@ export default async function handler(
       return res.status(400).json({ message: 'All fields are required' });
     }
 
+    if (email.length > 255) {
+      return res.status(400).json({ message: 'Email must be less than 255 characters.' });
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email format.' });
+    }
+
     const [existingUser]: any = await db.execute(
       'SELECT id FROM users WHERE email = ?',
       [email]
