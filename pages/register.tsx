@@ -106,12 +106,12 @@ export default function RegisterPage() {
 
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="first_name" className="text-gray-900">Ім'я:</Label>
-            <Input type="text" name="first_name" id="first_name" value={formData.first_name} onChange={handleChange} required />
+            <Input type="text" name="first_name" id="first_name" value={formData.first_name} onChange={handleChange} required maxLength={255}/>
           </div>
 
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="last_name" className="text-gray-900">Прізвище:</Label>
-            <Input type="text" name="last_name" id="last_name" value={formData.last_name} onChange={handleChange} required />
+            <Input type="text" name="last_name" id="last_name" value={formData.last_name} onChange={handleChange} required maxLength={255}/>
           </div>
 
           <div className="grid w-full items-center gap-1.5">

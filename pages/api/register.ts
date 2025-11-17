@@ -44,6 +44,20 @@ export default async function handler(
       return res.status(400).json({ message: 'Пароль має бути не більше 72 символів.' });
     }
 
+    if (first_name.trim().length === 0) {
+      return res.status(400).json({ message: 'Ім\'я не може бути порожнім.' });
+    }
+    if (last_name.trim().length === 0) {
+        return res.status(400).json({ message: 'Прізвище не може бути порожнім.' });
+    }
+    
+    if (first_name.length > 255) {
+      return res.status(400).json({ message: 'Ім\'я занадто довге (максимум - 255 символів).' });
+    }
+    if (last_name.length > 255) {
+      return res.status(400).json({ message: 'Прізвище занадто довге (максимум - 255 символів).' });
+    }
+
     const [existingUser]: any = await db.execute(
       'SELECT id FROM users WHERE email = ?',
       [email]
