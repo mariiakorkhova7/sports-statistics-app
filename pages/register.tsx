@@ -101,7 +101,7 @@ export default function RegisterPage() {
 
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="password" className="text-gray-900">Пароль:</Label>
-            <Input type="password" name="password" id="password" value={formData.password} onChange={handleChange} required />
+            <Input type="password" name="password" id="password" value={formData.password} onChange={handleChange} required minLength={8}/>
           </div>
 
           <div className="grid w-full items-center gap-1.5">

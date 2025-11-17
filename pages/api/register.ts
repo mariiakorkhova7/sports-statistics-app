@@ -36,6 +36,14 @@ export default async function handler(
       return res.status(400).json({ message: 'Неправильний формат ел. пошти.' });
     }
     
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Пароль має бути не менше 8 символів.' });
+    }
+    
+    if (password.length > 72) {
+      return res.status(400).json({ message: 'Пароль має бути не більше 72 символів.' });
+    }
+
     const [existingUser]: any = await db.execute(
       'SELECT id FROM users WHERE email = ?',
       [email]
