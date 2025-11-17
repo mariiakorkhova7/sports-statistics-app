@@ -7,15 +7,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
+    return res.status(405).json({ message: 'Метод не дозволено' });
   }
 
   try {
     const { 
       email, 
       password, 
-      first_name,
-      last_name,
+      first_name, 
+      last_name, 
       age, 
       sex, 
       skill_level, 
@@ -24,25 +24,25 @@ export default async function handler(
     } = req.body;
 
     if (!email || !password || !first_name || !last_name || !age || !sex || !skill_level || !playing_hand || !roles || roles.length === 0) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-
-    if (email.length > 255) {
-      return res.status(400).json({ message: 'Email must be less than 255 characters.' });
+      return res.status(400).json({ message: 'Всі поля є обов\'язковими' });
     }
     
+    if (email.length > 255) {
+      return res.status(400).json({ message: 'Ел. пошта має бути коротшою за 255 символів.' });
+    }
+  
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: 'Invalid email format.' });
+      return res.status(400).json({ message: 'Неправильний формат ел. пошти.' });
     }
-
+    
     const [existingUser]: any = await db.execute(
       'SELECT id FROM users WHERE email = ?',
       [email]
     );
 
     if (existingUser.length > 0) {
-      return res.status(409).json({ message: 'Email already in use' });
+      return res.status(409).json({ message: 'Ця ел. пошта вже використовується' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -62,10 +62,10 @@ export default async function handler(
       );
     }
 
-    res.status(201).json({ message: 'User registered successfully!', userId: newUserId });
+    res.status(201).json({ message: 'Користувача створено', userId: newUserId });
 
   } catch (error: any) {
     console.error(error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: 'Помилка сервера', error: error.message });
   }
 }
