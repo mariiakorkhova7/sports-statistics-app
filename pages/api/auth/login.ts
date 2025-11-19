@@ -29,7 +29,6 @@ export default async function handler(
     const user = users[0];
 
     const passwordsMatch = await bcrypt.compare(password, user.password_hash);
-
     if (!passwordsMatch) {
       return res.status(401).json({ message: 'Невірні дані' });
     }
@@ -46,7 +45,8 @@ export default async function handler(
       user: {
         id: user.id,
         email: user.email,
-        fullName: user.full_name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         roles: userRoles,
       },
     });
