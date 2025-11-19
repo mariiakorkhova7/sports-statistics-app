@@ -30,15 +30,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('shuttlescore_user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Failed to parse user data", error);
+        localStorage.removeItem('shuttlescore_user');
+      }
+    }
     setLoading(false);
   }, []);
 
   const login = (userData: User) => {
     setUser(userData);
+    localStorage.setItem('shuttlescore_user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('shuttlescore_user');
     router.push('/login');
   };
 
