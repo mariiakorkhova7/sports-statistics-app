@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/lib/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   
+  const { login } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -19,31 +21,38 @@ export default function LoginPage() {
     setMessage('');
     setError('');
 
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      setMessage(`Вхід успішний`);
-      
-      const userRoles = data.user.roles; 
+      if (response.ok) {
+        setMessage('Вхід успішний');
+        
+        login(data.user);
 
-      setTimeout(() => {
-        if (userRoles.includes('organizer')) {
-          router.push('/admin/dashboard'); 
-        } else if (userRoles.includes('player')) {
-          router.push('/profile');
-        } else {
-          router.push('/');
-        }
-      }, 1500);
+        const userRoles = data.user.roles; 
 
-    } else {
-      setError(`Помилка: ${data.message}`);
+        setTimeout(() => {
+          if (userRoles.includes('organizer')) {
+            router.push('/admin/dashboard'); 
+          } else if (userRoles.includes('player')) {
+            router.push('/profile');
+          } else {
+            router.push('/');
+          }
+        }, 1000);
+
+      } else {
+        setError(`Помилка: ${data.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Помилка з’єднання з сервером');
     }
   };
 
