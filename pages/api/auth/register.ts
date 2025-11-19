@@ -93,8 +93,8 @@ export default async function handler(
     const passwordHash = await bcrypt.hash(password, 10);
 
     const [result]: any = await db.execute(
-      `INSERT INTO users (email, password_hash, first_name, last_name, age, sex, skill_level, playing_hand) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO users (email, password_hash, first_name, last_name, age, sex, skill_level, playing_hand, created_at) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
       [email, passwordHash, first_name, last_name, age, sex, skill_level, playing_hand]
     );
     
