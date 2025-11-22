@@ -159,7 +159,7 @@ export default function OrganizerDashboard() {
                         <th className="pb-2 w-1/6 align-bottom">Дата початку</th>
                         <th className="pb-2 w-1/6 align-bottom">Дата завершення</th>
                         <th className="pb-2 w-1/6 align-bottom">Місце проведення</th>
-                        <th className="pb-2 w-1/6 align-bottom">Додаткова інформація</th>
+                        <th className="pb-2 w-1/6 align-bottom">Деталі</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
