@@ -60,22 +60,16 @@ export default function OrganizerDashboard() {
   };
 
   const getStatusBadge = (status: string) => {
-    const styles: Record<string, string> = {
-      upcoming: 'bg-blue-100 text-blue-800',
-      ongoing: 'bg-green-100 text-green-800 animate-pulse',
-      completed: 'bg-gray-100 text-gray-800',
-      cancelled: 'bg-red-100 text-red-800',
-    };
     
     const labels: Record<string, string> = {
-      upcoming: 'Планується',
-      ongoing: 'Триває',
+      upcoming: 'Заплановано',
+      ongoing: 'В процесі',
       completed: 'Завершено',
       cancelled: 'Скасовано',
     };
 
     return (
-      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status] || 'bg-gray-100'}`}>
+      <span className={`text-sm 'text-gray-900'}`}>
         {labels[status] || status}
       </span>
     );
@@ -95,7 +89,7 @@ export default function OrganizerDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Панель керування</h1>
-            <p className="text-l text-gray-500 mt-1">Прогрес створених турнірів</p>
+            <p className="text-l text-gray-500 mt-1">Створені турніри та їхній прогрес</p>
           </div>
           
           <Link href="/admin/tournaments/create">
@@ -157,40 +151,44 @@ export default function OrganizerDashboard() {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-gray-500 border-b">
-                    <tr>
-                      <th className="pb-3 font-medium">Назва турніру</th>
-                      <th className="pb-3 font-medium">Статус</th>
-                      <th className="pb-3 font-medium">Дата початку</th>
-                      <th className="pb-3 font-medium">Локація</th>
-                      <th className="pb-3 font-medium text-right">...</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {data.tournaments.map((t) => (
-                      <tr key={t.id} className="group hover:bg-gray-50/50 transition-colors">
-                        <td className="py-4 font-medium text-gray-900">{t.name}</td>
-                        <td className="py-4">{getStatusBadge(t.status)}</td>
-                        <td className="py-4 text-gray-600">
-                          {new Date(t.start_date).toLocaleDateString('uk-UA')}
-                        </td>
-                        <td className="py-4 text-gray-600">{t.location || '—'}</td>
-                        <td className="py-4 text-right">
-                          <Link href={`/admin/tournaments/${t.id}`}>
-                            <Button variant="ghost" size="sm">
-                              Деталі
-                            </Button>
-                          </Link>
-                        </td>
+                  <table className="w-full text-sm text-left table-fixed">
+                    <thead className="text-gray-700 border-b font-medium">
+                      <tr>
+                        <th className="pb-2 w-1/6 align-bottom">Назва</th>
+                        <th className="pb-2 w-1/6 align-bottom">Статус</th>
+                        <th className="pb-2 w-1/6 align-bottom">Дата початку</th>
+                        <th className="pb-2 w-1/6 align-bottom">Дата завершення</th>
+                        <th className="pb-2 w-1/6 align-bottom">Місце проведення</th>
+                        <th className="pb-2 w-1/6 align-bottom">Додаткова інформація</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {data.tournaments.map((t) => (
+                        <tr key={t.id} className="group hover:bg-gray-50/50 transition-colors">
+                          <td className="py-3 font-medium text-gray-900 truncate pr-2 align-middle">{t.name}</td>
+                          <td className="py-3 align-middle">{getStatusBadge(t.status)}</td>
+                          <td className="py-3 text-gray-600 align-middle">
+                            {new Date(t.start_date).toLocaleDateString('uk-UA')}
+                          </td>
+                          <td className="py-3 text-gray-600 align-middle">
+                            {new Date(t.end_date).toLocaleDateString('uk-UA')}
+                          </td>
+                          <td className="py-3 text-gray-600 truncate pr-2 align-middle">{t.location || '—'}</td>
+                          <td className="py-3 align-middle">
+                            <Link href={`/admin/tournaments/${t.id}`}>
+                              <Button size="sm">
+                                Переглянути
+                              </Button>
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
       </div>
