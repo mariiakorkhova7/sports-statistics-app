@@ -94,7 +94,7 @@ export default function OrganizerDashboard() {
           
           <Link href="/admin/tournaments/create">
             <Button className="shadow-md" size="sm">
-              + Створити Турнір
+              + Створити турнір
             </Button>
           </Link>
         </div>
