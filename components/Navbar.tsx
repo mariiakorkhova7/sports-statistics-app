@@ -48,7 +48,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href="/login">
-                  <Button size="sm">Увійти</Button>
+                  <Button size="sm">Вхід</Button>
                 </Link>
                 
                 <Link href="/register">
