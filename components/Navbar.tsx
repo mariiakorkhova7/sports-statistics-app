@@ -11,7 +11,7 @@ export default function Navbar() {
         href="/" 
         className="text-xl font-extrabold text-gray-900 tracking-tight hover:opacity-80 transition-opacity"
       >
-        ShuttleScore
+        ShuttleStats
       </Link>
 
       <div className="flex items-center gap-4">
