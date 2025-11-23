@@ -61,11 +61,11 @@ export default async function handler(
 
 function getCategoryName(code: string) {
   const map: Record<string, string> = {
-    MS: 'Men\'s Singles',
-    WS: 'Women\'s Singles',
-    MD: 'Men\'s Doubles',
-    WD: 'Women\'s Doubles',
-    XD: 'Mixed Doubles'
+    MS: 'Одиночний (чоловіки)',
+    WS: 'Одиночний (жінки)',
+    MD: 'Парний (чоловіки)',
+    WD: 'Парний (жінки)',
+    XD: 'Змішаний парний'
   };
   return map[code] || code;
 }
