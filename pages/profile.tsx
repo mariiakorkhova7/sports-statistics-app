@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/lib/AuthContext';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -156,9 +157,16 @@ export default function ProfilePage() {
                 </Button>
               </>
             ) : (
+              <>
+                <Button asChild size="sm">
+                  <Link href="/#tournaments">
+                    Знайти турніри
+                  </Link>
+                </Button>
               <Button size="sm" onClick={() => setIsEditing(true)}>
                 Редагувати профіль
               </Button>
+              </>
             )}
           </div>
         </div>
@@ -167,6 +175,18 @@ export default function ProfilePage() {
 
         <div>
           <h3 className="text-xl font-bold text-gray-800 mb-4">Статистика</h3>
+           {profile.stats.matches_played === 0 && profile.stats.tournaments_played === 0 ? (
+            <Card className="bg-gray-50 border">
+              <CardContent className="flex flex-col items-center justify-center py-10 text-center">
+                <p className="text-gray-500 mb-4">Ви ще не зіграли жодного матчу.</p>
+                <Button asChild>
+                  <Link href="/#tournaments">
+                    Зареєструватися на турнір
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-gray-500">Турніри</CardTitle></CardHeader>
@@ -188,6 +208,7 @@ export default function ProfilePage() {
               <CardContent><div className="text-2xl font-bold text-gray-900">{profile.stats.win_rate}%</div></CardContent>
             </Card>
           </div>
+          )}
         </div>
 
         <div>
