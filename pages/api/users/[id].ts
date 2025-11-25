@@ -10,18 +10,21 @@ export default async function handler(
   if (!id) {
     return res.status(400).json({ message: 'ID користувача обов’язкове' });
   }
-
-  if (req.method === 'GET') {
+if (req.method === 'GET') {
     try {
       const userPromise = db.execute(
         'SELECT id, first_name, last_name, email, age, sex, skill_level, playing_hand, created_at FROM users WHERE id = ?',
         [id]
       );
 
-      const tourneyPromise = db.execute(
-        'SELECT COUNT(*) as count FROM tournament_participants WHERE user_id = ?',
-        [id]
-      );
+      const tourneyListPromise = db.execute(`
+        SELECT DISTINCT t.id, t.name, t.start_date, t.location, t.status
+        FROM tournaments t
+        JOIN tournament_events te ON t.id = te.tournament_id
+        JOIN tournament_participants tp ON te.id = tp.tournament_event_id
+        WHERE tp.user_id = ?
+        ORDER BY t.start_date DESC
+      `, [id]);
 
       const statsPromise = db.execute(`
         SELECT 
@@ -38,19 +41,24 @@ export default async function handler(
         AND m.status = 'completed'
       `, [id, id, id, id]);
 
-      const [[userRows], [tourneyRows], [statsRows]]: any = await Promise.all([userPromise, tourneyPromise, statsPromise]);
+      const [[userRows], [tourneyRows], [statsRows]]: any = await Promise.all([
+        userPromise, 
+        tourneyListPromise, 
+        statsPromise
+      ]);
 
       if (userRows.length === 0) {
         return res.status(404).json({ message: 'Користувача не знайдено' });
       }
 
       const user = userRows[0];
-      const tournamentsCount = tourneyRows[0].count;
+      const tournamentsCount = tourneyRows.length; 
       const matchesPlayed = parseInt(statsRows[0].matches_played) || 0;
       const matchesWon = parseInt(statsRows[0].matches_won) || 0;
 
       res.status(200).json({
         ...user,
+        my_tournaments: tourneyRows, 
         stats: {
           tournaments_played: tournamentsCount,
           matches_played: matchesPlayed,
@@ -64,7 +72,7 @@ export default async function handler(
       console.error("API Error:", error);
       res.status(500).json({ message: 'Помилка сервера', error: error.message });
     }
-  } 
+  }
   
   else if (req.method === 'PUT') {
     try {

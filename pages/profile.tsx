@@ -5,6 +5,15 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Footer from '@/components/Footer';
+
+interface TournamentSummary {
+  id: number;
+  name: string;
+  start_date: string;
+  location: string;
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+}
 
 interface UserProfile {
   id: number;
@@ -16,6 +25,7 @@ interface UserProfile {
   skill_level: 'beginner' | 'intermediate' | 'advanced' | 'professional';
   playing_hand: 'left' | 'right';
   created_at: string | null;
+  my_tournaments?: TournamentSummary[];
   stats: {
     tournaments_played: number;
     matches_played: number;
@@ -73,7 +83,7 @@ export default function ProfilePage() {
     if (user?.id) {
       fetchProfile(user.id);
     }
-  }, [user]);
+  }, [user?.id]);
 
   const fetchProfile = async (userId: number) => {
     try {
@@ -134,7 +144,8 @@ export default function ProfilePage() {
   if (!profile) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col gap-8">
+      <div className="flex-1 py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
           <div>
@@ -211,8 +222,46 @@ export default function ProfilePage() {
           )}
         </div>
 
+        {profile.my_tournaments && profile.my_tournaments.length > 0 && (
+          <div>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Мої турніри</h3>
+            <div className="space-y-3">
+              {profile.my_tournaments.map((t) => (
+                <Card key={t.id} className="hover:shadow-sm transition-shadow p-3">
+                  <CardContent className="p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-bold text-lg text-gray-900">{t.name}</h4>
+                        <span className={`text-xs px-2 py-0.5 rounded ${
+                          t.status === 'upcoming' ? 'bg-gray-100 text-gray-900' :
+                          t.status === 'ongoing' ? 'bg-gray-100 text-gray-900' :
+                          'bg-gray-100 text-gray-900'
+                        }`}>
+                          {t.status === 'upcoming' ? 'Заплановано' :
+                           t.status === 'ongoing' ? 'Триває' :
+                           t.status === 'completed' ? 'Завершено' : 'Скасовано'}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-500 flex gap-3">
+                        <span>{new Date(t.start_date).toLocaleDateString('uk-UA')}</span>
+                        <span>|</span>
+                        <span>{t.location}</span>
+                      </div>
+                    </div>
+                    <Button asChild size="sm">
+                      <Link href={`/tournaments/${t.id}/register`}>
+                        Детальніше
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div>
-          <h4 className="text-l font-bold text-gray-800 mb-4">Особиста інформація</h4>
+          <h4 className="text-xl font-bold text-gray-900 mb-4">Особиста інформація</h4>
           <Card>
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -312,6 +361,9 @@ export default function ProfilePage() {
         </div>
 
       </div>
+      </div>
+
+      <Footer />
     </div>
   );
 }
