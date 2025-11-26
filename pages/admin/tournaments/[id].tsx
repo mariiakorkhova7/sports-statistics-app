@@ -23,6 +23,16 @@ interface Tournament {
   }>;
 }
 
+interface Participant {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  skill_level: string;
+  event_name: string;
+  sex: string;
+}
+
 const BracketView = () => {
   const matches = [
     { id: '1', round: 1, p1: 'Коваленко І.', p2: 'Бондар О.', s1: [21, 21], s2: [15, 18], winner: 'p1' },
@@ -85,6 +95,9 @@ export default function TournamentDetailsPage() {
   const { id } = router.query;
   
   const [tournament, setTournament] = useState<Tournament | null>(null);
+
+  const [participants, setParticipants] = useState<Participant[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -98,6 +111,7 @@ export default function TournamentDetailsPage() {
   useEffect(() => {
     if (id) {
       fetchTournament(id as string);
+      fetchParticipants(id as string);
     }
   }, [id]);
 
@@ -112,6 +126,17 @@ export default function TournamentDetailsPage() {
       console.error("Не вдалося отримати дані турніру");
     } finally {
       setLoading(false);
+    }
+  };
+
+   const fetchParticipants = async (tId: string) => {
+    try {
+      const res = await fetch(`/api/tournaments/${tId}/participants`);
+      if (res.ok) {
+        setParticipants(await res.json());
+      }
+    } catch (error) {
+      console.error("Failed to load participants");
     }
   };
 
@@ -258,12 +283,48 @@ export default function TournamentDetailsPage() {
 
           <TabsContent value="participants" className="mt-6">
             <Card>
-              <CardContent className="p-10 text-center text-gray-500">
-                <p>Список учасників буде відображено тут.</p>
-                <Button className="mt-4">Додати учасника вручну</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle>Список учасників</CardTitle>
+                <span className="text-sm text-gray-500">{participants.length} зареєстровано</span>
+              </div>
+              </CardHeader>
+              <CardContent>
+              {participants.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">Ще немає зареєстрованих учасників.</div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm text-left">
+                        <thead className="text-gray-500 font-medium border-b">
+                          <tr>
+                            <th className="pb-3">Ім'я</th>
+                            <th className="pb-3">Розряд</th>
+                            <th className="pb-3">Рівень навичок</th>
+                            <th className="pb-3">Ел. пошта</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y">
+                          {participants.map((p) => (
+                            <tr key={`${p.id}-${p.event_name}`} className="hover:bg-gray-50">
+                              <td className="py-3 font-medium text-gray-900">
+                                {p.first_name} {p.last_name}
+                              </td>
+                              <td className="py-3">
+                                <span className="bg-gray-100 px-2 py-1 rounded text-xs">
+                                  {p.event_name}
+                                </span>
+                              </td>
+                              <td className="py-3 text-gray-600">{p.skill_level}</td>
+                              <td className="py-3 text-gray-500">{p.email}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
 
           <TabsContent value="bracket" className="mt-6">
             {tournament.status === 'upcoming' ? (
