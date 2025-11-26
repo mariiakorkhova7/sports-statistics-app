@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import Footer from '@/components/Footer';
 
 const EVENT_TYPES = [
   { id: 'MS', label: 'Одиночний (чоловіки)' },
@@ -82,7 +83,8 @@ export default function CreateTournamentPage() {
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 pb-20">
+    <div className="min-h-screen bg-gray-50  flex flex-col gap-8">
+      <div className="flex-1 py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-8">
 
         <div>
@@ -223,6 +225,8 @@ export default function CreateTournamentPage() {
           </CardContent>
         </Card>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

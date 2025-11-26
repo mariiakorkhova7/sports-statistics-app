@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Footer from '@/components/Footer';
 
 interface Tournament {
   id: number;
@@ -30,7 +31,7 @@ const BracketView = () => {
   ];
 
   return (
-    <div className="border rounded-xl bg-gray-50 overflow-hidden mt-4">
+    <div className="border rounded-xl bg-gray-50 flex flex-col gap-8">
       <div className="p-4 border-b bg-white flex justify-between items-center">
         <h3 className="font-bold">Турнірна сітка (Demo)</h3>
         <span className="text-sm text-gray-500 border px-2 py-1 rounded bg-gray-50">Жіноча одиночна (WS)</span>
@@ -149,7 +150,8 @@ export default function TournamentDetailsPage() {
   if (!tournament) return <div className="p-10 text-center">Турнір не знайдено</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col gap-8">
+      <div className="flex-1 py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-lg shadow-sm border">
@@ -278,6 +280,8 @@ export default function TournamentDetailsPage() {
         </Tabs>
 
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/AuthContext';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Footer from '@/components/Footer';
 
 interface DashboardData {
   stats: {
@@ -84,7 +85,8 @@ export default function OrganizerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-gray-50 flex flex-col gap-8">
+      <div className="flex-1 py-10 px-4">
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-6">
           <div>
@@ -139,7 +141,7 @@ export default function OrganizerDashboard() {
         </div>
         </div>
         <div>
-        <h3 className="text-l font-bold text-gray-800 mb-4">Створені турніри</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">Створені турніри</h3>
         <Card>
           <CardContent>
             {(!data?.tournaments || data.tournaments.length === 0) ? (
@@ -192,6 +194,8 @@ export default function OrganizerDashboard() {
         </div>
 
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }
