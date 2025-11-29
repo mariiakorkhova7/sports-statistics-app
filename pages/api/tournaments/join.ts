@@ -16,6 +16,12 @@ export default async function handler(
   }
 
   try {
+    const [eventExists]: any = await db.execute('SELECT id FROM tournament_events WHERE id = ?', [eventId]);
+    
+    if (eventExists.length === 0) {
+      return res.status(404).json({ message: 'Турнір не знайдено' });
+    }
+
     const [existing]: any = await db.execute(
       'SELECT * FROM tournament_participants WHERE user_id = ? AND tournament_event_id = ?',
       [userId, eventId]
