@@ -78,7 +78,6 @@ async function runTests() {
     winnerTeamId: 1
   }, (status) => status >= 400, 'Should reject unrealistic scores (>30)');
 
-  console.log('\n\x1b[1mTest run complete.\x1b[0m');
 
 console.log('\n#4: Participation');
 
@@ -87,11 +86,11 @@ console.log('\n#4: Participation');
     userId: 1 
   }, (status) => status === 404 || status === 400, 'Should not allow joining phantom events');
 
-  await testEndpoint('Join - Missing Data', '/tournaments/join', 'POST', {
+  await testEndpoint('Join - Missing data', '/tournaments/join', 'POST', {
     eventId: 1
   }, (status) => status >= 400, 'Should reject incomplete requests');
 
-
+  
   console.log('\n#5: Bracket generation');
 
   await testEndpoint('Generate - Non-existent event', '/tournaments/bracket/generate', 'POST', {
@@ -101,8 +100,33 @@ console.log('\n#4: Participation');
   await testEndpoint('Generate - Missing Event ID', '/tournaments/bracket/generate', 'POST', {
   }, (status) => status >= 400, 'Should require eventId');
 
+console.log('\n#6: Data integrity');
+
+  await testEndpoint('Register - Invalid enum (sex)', '/auth/register', 'POST', {
+    email: 'some@example.com',
+    password: 'password123',
+    first_name: 'Unknown',
+    last_name: 'Man',
+    age: 25,
+    sex: 'unknown',
+    skill_level: 'beginner',
+    playing_hand: 'right'
+  }, (status) => status >= 400, 'Should reject invalid ENUM values');
+
+  await testEndpoint('Register - Invalid age (negative)', '/auth/register', 'POST', {
+    email: 'baby@example.com',
+    password: 'password123',
+    first_name: 'Baby',
+    last_name: 'Doe',
+    age: -5,
+    sex: 'male',
+    skill_level: 'beginner',
+    playing_hand: 'right'
+  }, (status) => status >= 400, 'Should reject negative age');
+
   console.log('\n\x1b[1mTest run complete.\x1b[0m');
 }
+
 
 async function testEndpoint(
   testName: string, 
