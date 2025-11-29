@@ -238,7 +238,7 @@ export default function ProfilePage() {
                           'bg-gray-100 text-gray-900'
                         }`}>
                           {t.status === 'upcoming' ? 'Заплановано' :
-                           t.status === 'ongoing' ? 'Триває' :
+                           t.status === 'ongoing' ? 'В процесі' :
                            t.status === 'completed' ? 'Завершено' : 'Скасовано'}
                         </span>
                       </div>
