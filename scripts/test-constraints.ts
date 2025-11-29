@@ -79,6 +79,29 @@ async function runTests() {
   }, (status) => status >= 400, 'Should reject unrealistic scores (>30)');
 
   console.log('\n\x1b[1mTest run complete.\x1b[0m');
+
+console.log('\n#4: Participation');
+
+  await testEndpoint('Join - Non-existent event', '/tournaments/join', 'POST', {
+    eventId: 999999, 
+    userId: 1 
+  }, (status) => status === 404 || status === 400, 'Should not allow joining phantom events');
+
+  await testEndpoint('Join - Missing Data', '/tournaments/join', 'POST', {
+    eventId: 1
+  }, (status) => status >= 400, 'Should reject incomplete requests');
+
+
+  console.log('\n#5: Bracket generation');
+
+  await testEndpoint('Generate - Non-existent event', '/tournaments/bracket/generate', 'POST', {
+    eventId: 999999
+  }, (status) => status === 404 || status === 400, 'Should fail gracefully for missing event');
+
+  await testEndpoint('Generate - Missing Event ID', '/tournaments/bracket/generate', 'POST', {
+  }, (status) => status >= 400, 'Should require eventId');
+
+  console.log('\n\x1b[1mTest run complete.\x1b[0m');
 }
 
 async function testEndpoint(
