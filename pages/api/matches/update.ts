@@ -10,6 +10,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ message: 'Відсутній ID матчу/сету' });
   }
 
+  for (const s of sets) {
+    if (s.p1_score < 0 || s.p2_score < 0) {
+      return res.status(400).json({ message: 'Значення рахунку не може бути відємним' });
+    }
+    
+    if (s.p1_score > 30 || s.p2_score > 30) {
+      return res.status(400).json({ message: 'Рахунок нереалістично великий (>30)' });
+    }
+  }
+
   try {
     await db.execute('DELETE FROM match_sets WHERE match_id = ?', [matchId]);
     
