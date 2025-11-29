@@ -338,6 +338,21 @@ export default function TournamentDetailsPage() {
     }
   };
 
+  const handleCloseTournament = async () => {
+    if (!confirm('Ви впевнені, що хочете завершити турнір? Всі результати буде зафіксовано.')) return;
+    
+    try {
+      await fetch(`/api/tournaments/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'completed' }),
+      });
+      fetchTournament(id as string); 
+    } catch (err) {
+      alert('Помилка');
+    }
+  };
+
   const getParticipantLabel = (count: number) => {
     const lastDigit = count % 10;
     const lastTwoDigits = count % 100;
@@ -384,6 +399,15 @@ export default function TournamentDetailsPage() {
             {tournament.status === 'upcoming' && (
               <Button size="sm" onClick={handleStartTournament}>
                 Розпочати турнір
+              </Button>
+            )}
+
+            {tournament.status === 'ongoing' && (
+              <Button 
+                size="sm" 
+                onClick={handleCloseTournament}
+              >
+                Завершити турнір
               </Button>
             )}
           </div>
