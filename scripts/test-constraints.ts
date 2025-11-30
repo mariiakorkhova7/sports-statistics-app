@@ -76,7 +76,19 @@ async function runTests() {
     matchId: 1, 
     sets: [{ set_number: 1, p1_score: 999, p2_score: 997 }],
     winnerTeamId: 1
-  }, (status) => status >= 400, 'Should reject unrealistic scores (>30)');
+  }, (status) => status >= 400, 'Should reject unrealistic scores');
+
+  await testEndpoint('Match update - Score > 30 (34-22)', '/matches/update', 'PUT', {
+    matchId: 1, 
+    sets: [{ set_number: 1, p1_score: 34, p2_score: 22 }],
+    winnerTeamId: 1
+  }, (status) => status >= 400, 'Should reject scores > 30');
+
+  await testEndpoint('Match update - Invalid "win by two" (21-20)', '/matches/update', 'PUT', {
+    matchId: 1, 
+    sets: [{ set_number: 1, p1_score: 21, p2_score: 20 }],
+    winnerTeamId: 1
+  }, (status) => status >= 400, 'Should reject winning by only 1 point (unless 30)');
 
 
 console.log('\n#4: Participation');
