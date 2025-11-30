@@ -11,12 +11,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   for (const s of sets) {
-    if (s.p1_score < 0 || s.p2_score < 0) {
-      return res.status(400).json({ message: 'Значення рахунку не може бути відємним' });
+    const s1 = s.p1_score;
+    const s2 = s.p2_score;
+    const maxScore = Math.max(s1, s2);
+    const diff = Math.abs(s1 - s2);
+
+    if (s1 < 0 || s2 < 0) {
+      return res.status(400).json({ message: 'Scores cannot be negative' });
     }
     
-    if (s.p1_score > 30 || s.p2_score > 30) {
-      return res.status(400).json({ message: 'Рахунок нереалістично великий (>30)' });
+    if (maxScore > 30) {
+      return res.status(400).json({ message: `Score ${maxScore} exceeds the maximum of 30 points` });
+    }
+
+    if (maxScore >= 21 && maxScore < 30) {
+        if (diff < 2) {
+             return res.status(400).json({ message: `At score ${maxScore}, you must win by 2 points (e.g., 22-20, not 21-20)` });
+        }
+    }
+    
+    if (winnerTeamId && maxScore < 21) {
+        return res.status(400).json({ message: 'Рахунок переможця має складати мінімум 21' });
     }
   }
 
