@@ -71,3 +71,23 @@ export interface TournamentSmallSummary {
   location: string;
   status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
 }
+
+export interface UserProfile {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  age: number;
+  sex: 'male' | 'female';
+  skill_level: 'beginner' | 'intermediate' | 'advanced' | 'professional';
+  playing_hand: 'left' | 'right';
+  created_at: string | null;
+  my_tournaments?: TournamentSmallSummary[];
+  stats: {
+    tournaments_played: number;
+    matches_played: number;
+    matches_won: number;
+    matches_lost: number;
+    win_rate: string | number;
+  };
+}

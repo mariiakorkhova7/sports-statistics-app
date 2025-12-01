@@ -6,27 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Footer from '@/components/Footer';
-import { TournamentSmallSummary } from '@/lib/types';
-
-interface UserProfile {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  age: number;
-  sex: 'male' | 'female';
-  skill_level: 'beginner' | 'intermediate' | 'advanced' | 'professional';
-  playing_hand: 'left' | 'right';
-  created_at: string | null;
-  my_tournaments?: TournamentSmallSummary[];
-  stats: {
-    tournaments_played: number;
-    matches_played: number;
-    matches_won: number;
-    matches_lost: number;
-    win_rate: string | number;
-  };
-}
+import { UserProfile } from '@/lib/types';
 
 export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();
