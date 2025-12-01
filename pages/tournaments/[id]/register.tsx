@@ -3,21 +3,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '@/lib/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-interface Tournament {
-  id: number;
-  name: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  location: string;
-  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
-  events: Array<{
-    id: number;
-    category: string;
-    name: string;
-  }>;
-}
+import { Tournament } from '@/lib/types';
 
 const eventTranslations: { [key: string]: string } = {
   "Men's Singles": "Одиночний (чоловіки)",

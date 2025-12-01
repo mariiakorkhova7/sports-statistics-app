@@ -5,19 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/lib/AuthContext';
 import Footer from '@/components/Footer';
-
-interface Tournament {
-  id: number;
-  name: string;
-  start_date: string;
-  location: string;
-  status: 'upcoming' | 'ongoing';
-  description: string;
-}
+import { TournamentSummary } from '@/lib/types';
 
 export default function Home() {
   const { user } = useAuth();
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [tournaments, setTournaments] = useState<TournamentSummary[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

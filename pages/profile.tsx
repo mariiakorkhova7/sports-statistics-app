@@ -6,14 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Footer from '@/components/Footer';
-
-interface TournamentSummary {
-  id: number;
-  name: string;
-  start_date: string;
-  location: string;
-  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
-}
+import { TournamentSmallSummary } from '@/lib/types';
 
 interface UserProfile {
   id: number;
@@ -25,7 +18,7 @@ interface UserProfile {
   skill_level: 'beginner' | 'intermediate' | 'advanced' | 'professional';
   playing_hand: 'left' | 'right';
   created_at: string | null;
-  my_tournaments?: TournamentSummary[];
+  my_tournaments?: TournamentSmallSummary[];
   stats: {
     tournaments_played: number;
     matches_played: number;

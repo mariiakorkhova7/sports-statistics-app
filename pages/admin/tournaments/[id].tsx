@@ -6,46 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import Footer from '@/components/Footer';
-
-interface Tournament {
-  id: number;
-  name: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  location: string;
-  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
-  events: Array<{
-    id: number;
-    category: string;
-    name: string;
-    participant_count: number;
-  }>;
-}
-
-interface Participant {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  skill_level: string;
-  event_name: string;
-  sex: string;
-}
-
-interface Match {
-  match_id: number;
-  match_level: string;
-  status: string;
-  p1_name: string | null;
-  p1_partner_name?: string | null;
-  p2_name: string | null;
-  p2_partner_name?: string | null;
-  p1_team_id: number | null;
-  p2_team_id: number | null;
-  sets: any;
-  winner_team_id: number | null;
-}
+import { Tournament, Participant, Match } from '@/lib/types';
 
 const groupMatchesByRound = (matches: Match[]) => {
   const rounds: Match[][] = [];

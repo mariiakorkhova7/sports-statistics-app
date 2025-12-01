@@ -5,23 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from '@/components/Footer';
-
-interface DashboardData {
-  stats: {
-    total: number;
-    upcoming: number;
-    ongoing: number;
-    completed: number;
-  };
-  tournaments: Array<{
-    id: number;
-    name: string;
-    start_date: string;
-    end_date: string;
-    status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
-    location: string;
-  }>;
-}
+import { DashboardData } from '@/lib/types';
 
 export default function OrganizerDashboard() {
   const { user, loading: authLoading } = useAuth();
