@@ -17,16 +17,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const diff = Math.abs(s1 - s2);
 
     if (s1 < 0 || s2 < 0) {
-      return res.status(400).json({ message: 'Scores cannot be negative' });
+      return res.status(400).json({ message: 'Рахунок не може бути відємним' });
     }
     
     if (maxScore > 30) {
-      return res.status(400).json({ message: `Score ${maxScore} exceeds the maximum of 30 points` });
+      return res.status(400).json({ message: `Рахунок ${maxScore} перевищує значення 30` });
     }
 
     if (maxScore >= 21 && maxScore < 30) {
         if (diff < 2) {
-             return res.status(400).json({ message: `At score ${maxScore}, you must win by 2 points (e.g., 22-20, not 21-20)` });
+             return res.status(400).json({ message: `На рахунку ${maxScore}, ви маєте виграти до різниці в 2 очка (напр., 22-20, а не 21-20)` });
         }
     }
     
