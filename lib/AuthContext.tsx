@@ -30,13 +30,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('shuttlescore_user');
+    const storedUser = localStorage.getItem('shuttlestats_user');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (error) {
-        console.error("Failed to parse user data", error);
-        localStorage.removeItem('shuttlescore_user');
+        console.error("Помилка при парсингу даних користувача", error);
+        localStorage.removeItem('shuttlestats_user');
       }
     }
     setLoading(false);
