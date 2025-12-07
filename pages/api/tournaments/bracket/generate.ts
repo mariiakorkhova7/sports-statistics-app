@@ -2,19 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../../lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
+  if (req.method !== 'POST') return res.status(405).json({ message: 'Метод не дозволено' });
 
   const { eventId, reset } = req.body;
-  if (!eventId) return res.status(400).json({ message: 'Event ID is required' });
+  if (!eventId) return res.status(400).json({ message: 'ID події є обовязковим' });
 
   try {
-    if (reset) {
-       await db.execute('DELETE FROM match_sets WHERE match_id IN (SELECT id FROM matches WHERE tournament_event_id = ?)', [eventId]);
-       await db.execute('DELETE FROM match_participants WHERE match_id IN (SELECT id FROM matches WHERE tournament_event_id = ?)', [eventId]);
-       await db.execute('DELETE FROM matches WHERE tournament_event_id = ?', [eventId]);
-       await db.execute('DELETE FROM teams WHERE tournament_event_id = ?', [eventId]);
-    }
 
+    
     const [existing]: any = await db.execute('SELECT id FROM matches WHERE tournament_event_id = ?', [eventId]);
     if (existing.length > 0) return res.status(400).json({ message: 'Bracket already exists' });
 
