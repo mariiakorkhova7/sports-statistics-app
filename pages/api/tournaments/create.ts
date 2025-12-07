@@ -12,11 +12,10 @@ export default async function handler(
   const {
     userId,
     name,
+    description,
     location,
     start_date,
     end_date,
-    points_to_win,
-    max_sets,
     events
   } = req.body;
 
@@ -27,17 +26,14 @@ export default async function handler(
   try {
     const [result]: any = await db.execute(
       `INSERT INTO tournaments 
-      (name, location, start_date, end_date, points_to_win, max_sets, win_by_two, max_points, status, created_by_user_id, created_at) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'upcoming', ?, NOW())`,
+      (name, description, location, start_date, end_date, status, created_by_user_id, created_at) 
+      VALUES (?, ?, ?, ?, ?, 'upcoming', ?, NOW())`,
       [
-        name, 
+        name,
+        description || null,
         location, 
         start_date, 
-        end_date, 
-        points_to_win || 21, 
-        max_sets || 3, 
-        1,
-        30,
+        end_date,
         userId
       ]
     );

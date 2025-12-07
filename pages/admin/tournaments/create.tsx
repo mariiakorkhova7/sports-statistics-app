@@ -26,9 +26,7 @@ export default function CreateTournamentPage() {
     description: '',
     location: '',
     start_date: '',
-    end_date: '',
-    points_to_win: 21,
-    max_sets: 3,
+    end_date: ''
   });
   
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
@@ -160,27 +158,8 @@ export default function CreateTournamentPage() {
                   </div>
                 </div>
               </div>
+
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label>Кількість очок в одному сеті</Label>
-                  <Input 
-                    type="number" 
-                    name="points_to_win" 
-                    value={formData.points_to_win}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Кількість сетів у матчі</Label>
-                  <Input 
-                    type="number" 
-                    name="max_sets" 
-                    value={formData.max_sets}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
 
               <div className="space-y-3">
                 <Label>Розряд</Label>

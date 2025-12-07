@@ -27,11 +27,7 @@ CREATE TABLE `tournaments` (
   `status` enum('upcoming','ongoing','completed','cancelled') NOT NULL,
   `created_by_user_id` integer NOT NULL,
   `created_at` timestamp,
-  `updated_at` timestamp,
-  `max_sets` tinyint,
-  `points_to_win` integer NOT NULL,
-  `win_by_two` tinyint(1) NOT NULL,
-  `max_points` integer
+  `updated_at` timestamp
 );
 
 CREATE TABLE `tournament_events` (
