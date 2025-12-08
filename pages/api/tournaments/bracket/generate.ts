@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     
     const [existing]: any = await db.execute('SELECT id FROM matches WHERE tournament_event_id = ?', [eventId]);
-    if (existing.length > 0) return res.status(400).json({ message: 'Bracket already exists' });
+    if (existing.length > 0) return res.status(400).json({ message: 'Сітку вже створено' });
 
     const [rows]: any = await db.execute(
       'SELECT user_id FROM tournament_participants WHERE tournament_event_id = ?',
@@ -125,6 +125,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
          await db.execute('UPDATE matches SET status = ? WHERE id = ?', ['cancelled', matchId]);
       }
     }
+
+    res.status(200).json({ message: 'Сітку успішно згенеровано', matchIds });
 
   } catch (error: any) {
     console.error("Помилка генерування:", error);
