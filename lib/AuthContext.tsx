@@ -44,12 +44,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('shuttlescore_user', JSON.stringify(userData));
+    localStorage.setItem('shuttlestats_user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('shuttlescore_user');
+    localStorage.removeItem('shuttlestats_user');
     router.push('/login');
   };
 
