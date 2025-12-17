@@ -286,14 +286,14 @@ export default function ProfilePage() {
                     <select name="skill_level" value={formData.skill_level} onChange={handleInputChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
                         <option value="beginner">Початківець</option>
                         <option value="intermediate">Середній</option>
-                        <option value="advanced">Просунутий</option>
+                        <option value="advanced">Вище середнього</option>
                         <option value="professional">Професіонал</option>
                       </select>
                   ) : (
                     <p className="text-lg font-medium text-gray-900">
                       {profile.skill_level === 'beginner' ? 'Початківець' : 
-                      profile.skill_level === 'intermediate' ? 'Любитель' :
-                      profile.skill_level === 'advanced' ? 'Просунутий' : 'Професіонал'}
+                      profile.skill_level === 'intermediate' ? 'Середній' :
+                      profile.skill_level === 'advanced' ? 'Вище середнього' : 'Професіонал'}
                     </p>
                   )}
                 </div>
